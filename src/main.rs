@@ -12,7 +12,7 @@ fn goodbye() {
   println!("{}", style("See you next time! o/").magenta().bold());
 
   println!("{}", style("Press any key to continue...").dim().italic());
-  game::ask_user();
+  game::utils::ask_user();
 }
 
 fn main() {
@@ -20,7 +20,7 @@ fn main() {
 
   println!("{}\n1. New game\n2. Exit", style("Menu").green().bold().underlined());
 
-  let pick = game::ask_user();
+  let pick = game::utils::ask_user();
   if pick == "1" {
     loop {
       game::clear_terminal();
@@ -28,7 +28,7 @@ fn main() {
 
       println!("{} (Y/n)", style("Game over! Play again?").bold().italic());
       let retry = loop {
-        match game::ask_user().to_lowercase().trim() {
+        match game::utils::ask_user().to_lowercase().trim() {
           "" | "y" => break true,
           "n" => break false,
           _ => println!("{}", style("Unknown option!").red()),

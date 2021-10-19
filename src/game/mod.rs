@@ -1,5 +1,6 @@
-use std::io::{stdin};
-use console::{style, StyledObject};
+use console::{style};
+
+pub mod utils;
 
 pub fn new() {
   let mut board: [char; 9] = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
@@ -9,7 +10,7 @@ pub fn new() {
     draw(&board);
     step(&mut board, player);
     if has_won(&board) {
-      println!("{} {}", format_player(&player), style("won! \\o/").blue());
+      println!("{} {}", utils::format_player(&player), style("won! \\o/").blue());
       break;
     }
 
@@ -42,11 +43,11 @@ fn has_won(board: &[char; 9]) -> bool {
 }
 
 fn step(board: &mut [char; 9], player: char) {
-  println!("{}: What's your pick? (1-9)", format_player(&player));
+  println!("{}: What's your pick? (1-9)", utils::format_player(&player));
 
   let mut input;
   loop {
-    input = ask_user().trim().parse::<usize>();
+    input = utils::ask_user().trim().parse::<usize>();
     if let Ok(number) = input {
       if ((number as i32) < 0) || (number as i32 > board.len() as i32) {
         println!("{}", style("Unknown slot!").red());
@@ -56,7 +57,7 @@ fn step(board: &mut [char; 9], player: char) {
       let number = number - 1;
 
       if board[number] == 'X' || board[number] == 'O' {
-        println!("{} {}", style("This slot is already taken by").red(), format_player(&board[number]));
+        println!("{} {}", style("This slot is already taken by").red(), utils::format_player(&board[number]));
         continue;
       }
 
@@ -70,35 +71,15 @@ fn step(board: &mut [char; 9], player: char) {
   }
 }
 
-pub fn ask_user() -> String {
-  let mut txt = String::new();
-  stdin().read_line(&mut txt).unwrap();
-
-  txt.trim_end().to_string()
-}
-
-fn format_player(player: &char) -> StyledObject<&char> {
-  let val;
-  if player == &'X' {
-    val = style(player).green();
-  } else if player == &'O' {
-    val = style(player).yellow();
-  } else {
-    val = style(player).red();
-  }
-
-  val.bold()
-}
-
 fn draw(board: &[char; 9]) {
   for i in 0..3 {
     let offset = i * 3;
 
     println!(
       "-------------\n| {} | {} | {} |",
-      format_player(&board[offset]),
-      format_player(&board[offset + 1]),
-      format_player(&board[offset + 2])
+      utils::format_player(&board[offset]),
+      utils::format_player(&board[offset + 1]),
+      utils::format_player(&board[offset + 2])
     )
   }
 
