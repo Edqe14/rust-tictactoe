@@ -9,7 +9,7 @@ pub fn new() {
     draw(&board);
     step(&mut board, player);
     if has_won(&board) {
-      println!("{} won! \\o/", format_player(&player));
+      println!("{} {}", format_player(&player), style("won! \\o/").blue());
       break;
     }
 

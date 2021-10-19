@@ -18,7 +18,7 @@ fn goodbye() {
 fn main() {
   greeting();
 
-  println!("{}\n1. New game\n2. Exit", style("Menu").bold().underlined());
+  println!("{}\n1. New game\n2. Exit", style("Menu").green().bold().underlined());
 
   let pick = game::ask_user();
   if pick == "1" {
@@ -26,20 +26,16 @@ fn main() {
       game::clear_terminal();
       game::new();
 
-      println!("Game over! Play again? (Y/n)");
-      let mut retry: String;
-      loop {
-        retry = game::ask_user().to_lowercase().trim().to_string();
-        if retry == "" {
-          retry = "y".to_string();
-        } else if retry != "n" && retry != "y" {
-          continue;
+      println!("{} (Y/n)", style("Game over! Play again?").bold().italic());
+      let retry = loop {
+        match game::ask_user().to_lowercase().trim() {
+          "" | "y" => break true,
+          "n" => break false,
+          _ => println!("{}", style("Unknown option!").red()),
         }
+      };
 
-        break;
-      }
-
-      if retry == "y" {
+      if retry {
         continue;
       }
 
